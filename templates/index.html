@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blockchain Voting System</title>
+  </head>
+  <body>
+    <h1>Blockchain Voting System</h1>
+    <form id="registerForm">
+      <h2>Register Voter</h2>
+      <input type="text" id="voter_id" placeholder="Voter ID" />
+      <button type="submit">Register</button>
+    </form>
+
+    <form id="voteForm">
+      <h2>Cast Vote</h2>
+      <input type="text" id="voter_id_vote" placeholder="Voter ID" />
+      <input type="text" id="candidate" placeholder="Candidate" />
+      <button type="submit">Vote</button>
+    </form>
+
+    <button id="viewResults">View Results</button>
+    <pre id="results"></pre>
+
+    <script>
+      const registerForm = document.getElementById("registerForm");
+      registerForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const voter_id = document.getElementById("voter_id").value;
+        const response = await fetch("/register-voter", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ voter_id }),
+        });
+        alert((await response.json()).message);
+      });
+
+      const voteForm = document.getElementById("voteForm");
+      voteForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const voter_id = document.getElementById("voter_id_vote").value;
+        const candidate = document.getElementById("candidate").value;
+        const response = await fetch("/cast-vote", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ voter_id, candidate }),
+        });
+        alert((await response.json()).message);
+      });
+
+      document
+        .getElementById("viewResults")
+        .addEventListener("click", async () => {
+          const response = await fetch("/results");
+          const results = await response.json();
+          document.getElementById("results").textContent = JSON.stringify(
+            results,
+            null,
+            2
+          );
+        });
+    </script>
+  </body>
+</html>
