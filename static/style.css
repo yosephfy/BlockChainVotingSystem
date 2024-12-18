@@ -1,0 +1,284 @@
+/* General Body Styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+/* Container for Page Content */
+.container {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Header Styling */
+header h1 {
+  color: #333;
+  font-size: 2.5rem;
+}
+
+header p {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+/* Intro Section */
+.intro h2 {
+  color: #007bff;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.intro p {
+  font-size: 1rem;
+  color: #444;
+}
+
+/* Navigation Buttons */
+.navigation {
+  margin-top: 20px;
+}
+
+.navigation .button {
+  display: inline-block;
+  margin: 10px;
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.navigation .button:hover {
+  background: #0056b3;
+}
+
+/* Footer Styling */
+footer {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+/* Voter Section Specific */
+.voter-registration,
+.cast-vote,
+.view-results {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.voter-registration h2,
+.cast-vote h2,
+.view-results h2 {
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.voter-registration form input,
+.cast-vote form input {
+  margin: 10px 0;
+  padding: 10px;
+  width: 90%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.voter-registration form button,
+.cast-vote form button {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.voter-registration form button:hover,
+.cast-vote form button:hover {
+  background-color: #0056b3;
+}
+
+.view-results button {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.view-results button:hover {
+  background-color: #218838;
+}
+
+.view-results pre {
+  margin-top: 10px;
+  padding: 10px;
+  background: #e9ecef;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: left;
+  font-family: monospace;
+}
+
+/* Admin Section Specific */
+.admin-actions {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.admin-actions h2 {
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.admin-actions button {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #ffc107;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.admin-actions button:hover {
+  background-color: #e0a800;
+}
+
+.admin-actions pre {
+  margin-top: 10px;
+  padding: 10px;
+  background: #e9ecef;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: left;
+  font-family: monospace;
+}
+
+/* About Page Specific */
+.about-overview,
+.about-benefits,
+.about-how-it-works,
+.about-technical {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.about-overview h2,
+.about-benefits h2,
+.about-how-it-works h2,
+.about-technical h2 {
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.about-benefits ul {
+  list-style-type: disc;
+  margin-left: 20px;
+}
+
+.about-benefits li {
+  margin: 10px 0;
+}
+
+/* Help/FAQ Page Specific */
+.help-issues,
+.help-faq {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.help-issues h2,
+.help-faq h2 {
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.help-issues ul,
+.help-faq ul {
+  list-style-type: disc;
+  margin-left: 20px;
+}
+
+.help-issues li,
+.help-faq li {
+  margin: 10px 0;
+}
+
+.help-issues li strong,
+.help-faq li strong {
+  color: #007bff;
+}
+
+/* Contact Page Specific */
+.contact-form,
+.contact-info {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.contact-form h2,
+.contact-info h2 {
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.contact-form form input,
+.contact-form form textarea,
+.contact-form form button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.contact-form form button {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border: none;
+}
+
+.contact-form form button:hover {
+  background-color: #0056b3;
+}
+
+.contact-info p {
+  font-size: 1rem;
+  color: #444;
+}
+
+.contact-info p strong {
+  color: #007bff;
+}

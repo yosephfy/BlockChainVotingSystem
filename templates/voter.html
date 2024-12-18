@@ -3,15 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blockchain Voting System</title>
+    <title>Voter Section</title>
     <link rel="stylesheet" href="/static/style.css" />
   </head>
   <body>
     <div class="container">
-      <h1>Blockchain Voting System</h1>
+      <header>
+        <h1>Voter Section</h1>
+        <p>Manage your voting process here.</p>
+      </header>
 
       <!-- Voter Registration -->
-      <div class="section">
+      <section class="voter-registration">
         <h2>Register Voter</h2>
         <form id="registerForm">
           <input
@@ -22,10 +25,10 @@
           />
           <button type="submit">Register</button>
         </form>
-      </div>
+      </section>
 
       <!-- Cast Vote -->
-      <div class="section">
+      <section class="cast-vote">
         <h2>Cast Vote</h2>
         <form id="voteForm">
           <input
@@ -42,14 +45,18 @@
           />
           <button type="submit">Vote</button>
         </form>
-      </div>
+      </section>
 
       <!-- View Results -->
-      <div class="section">
-        <h2>Results</h2>
+      <section class="view-results">
+        <h2>View Results</h2>
         <button id="viewResults">View Results</button>
         <pre id="results"></pre>
-      </div>
+      </section>
+
+      <footer>
+        <a href="/">Back to Home</a>
+      </footer>
     </div>
 
     <script>

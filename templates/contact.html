@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Contact Us</h1>
+        <p>We’re here to help.</p>
+      </header>
+
+      <!-- Contact Form -->
+      <section class="contact-form">
+        <h2>Send Us a Message</h2>
+        <form id="contactForm">
+          <input type="text" id="name" placeholder="Your Name" required />
+          <input type="email" id="email" placeholder="Your Email" required />
+          <textarea id="message" placeholder="Your Message" required></textarea>
+          <button type="submit">Send</button>
+        </form>
+      </section>
+
+      <!-- Contact Information -->
+      <section class="contact-info">
+        <h2>Contact Information</h2>
+        <p><strong>Email:</strong> support@blockchainvoting.com</p>
+        <p><strong>Phone:</strong> +1-800-555-1234</p>
+      </section>
+
+      <!-- Footer -->
+      <footer>
+        <a href="/">Back to Home</a>
+      </footer>
+    </div>
+
+    <script>
+      document.getElementById("contactForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        alert("Thank you for reaching out! We'll get back to you soon.");
+      });
+    </script>
+  </body>
+</html>
