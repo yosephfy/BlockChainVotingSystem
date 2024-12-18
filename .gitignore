@@ -1,0 +1,28 @@
+# Ignore the virtual environment
+venv/
+env/
+
+# Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE files
+*.idea/
+*.vscode/
+*.DS_Store
+
+# Flask-related
+instance/
+*.log
+
+# Environment variables
+.env
+
+# Node.js dependencies (if used later)
+node_modules/
+
+# OS-specific files
+Thumbs.db
+.DS_Store
