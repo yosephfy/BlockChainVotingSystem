@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard with Charts</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/admin_dashboard.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Admin Dashboard</h1>
+        <p>Manage the election process and visualize results.</p>
+      </header>
+
+      <!-- Admin Actions -->
+      <section class="admin-actions">
+        <h2>Admin Actions</h2>
+
+        <!-- Manage Election -->
+        <div>
+          <h3>Manage Election</h3>
+          <button id="startElection">Start Election</button>
+          <button id="endElection">End Election</button>
+          <p id="electionStatus">Election Status: Not Started</p>
+        </div>
+
+        <!-- View Registered Voters -->
+        <div>
+          <h3>View Registered Voters</h3>
+          <button id="viewVoters">View Voters</button>
+          <div id="voterListContainer">
+            <ul id="voterList"></ul>
+          </div>
+        </div>
+
+        <!-- Visualize Results -->
+        <div>
+          <h3>Visualize Results</h3>
+          <button id="viewStatistics">View Results</button>
+          <canvas id="resultsChart" width="400" height="400"></canvas>
+        </div>
+
+        <!-- Reset Results -->
+        <div>
+          <h3>Reset Election Results</h3>
+          <button id="resetResults">Reset Results</button>
+          <p id="resetStatus"></p>
+        </div>
+
+        <!-- Audit Blockchain -->
+        <div>
+          <h3>Audit Blockchain</h3>
+          <button id="auditBlockchain">Audit Blockchain</button>
+          <p id="auditResult"></p>
+        </div>
+      </section>
+
+      <footer>
+        <a href="/logout">Logout</a> | <a href="/">Back to Home</a>
+      </footer>
+    </div>
+  </body>
+</html>

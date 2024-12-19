@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Voter Login</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <script src="/static/login.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Voter Login</h1>
+        <p>Please log in to access the voting system.</p>
+      </header>
+
+      <!-- Login Form -->
+      <section class="voter-login">
+        <form id="loginForm">
+          <input
+            type="text"
+            id="login_voter_id"
+            placeholder="Enter Voter ID"
+            required
+          />
+          <input
+            type="password"
+            id="login_password"
+            placeholder="Enter Password"
+            required
+          />
+          <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="/register">Register here</a>.</p>
+      </section>
+
+      <footer>
+        <a href="/">Back to Home</a>
+      </footer>
+    </div>
+  </body>
+</html>

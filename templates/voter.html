@@ -2,41 +2,22 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Voter Section</title>
+    <title>Voter Dashboard</title>
     <link rel="stylesheet" href="/static/style.css" />
+    <script src="/static/voter.js" defer></script>
   </head>
   <body>
     <div class="container">
       <header>
-        <h1>Voter Section</h1>
-        <p>Manage your voting process here.</p>
+        <h1>Welcome, {{ voter_id }}</h1>
+        <p>Election Status: <span id="electionStatus">Loading...</span></p>
+        <p>Cast your vote and view election results.</p>
       </header>
-
-      <!-- Voter Registration -->
-      <section class="voter-registration">
-        <h2>Register Voter</h2>
-        <form id="registerForm">
-          <input
-            type="text"
-            id="voter_id"
-            placeholder="Enter Voter ID"
-            required
-          />
-          <button type="submit">Register</button>
-        </form>
-      </section>
 
       <!-- Cast Vote -->
       <section class="cast-vote">
         <h2>Cast Vote</h2>
         <form id="voteForm">
-          <input
-            type="text"
-            id="voter_id_vote"
-            placeholder="Enter Voter ID"
-            required
-          />
           <input
             type="text"
             id="candidate"
@@ -52,54 +33,12 @@
         <h2>View Results</h2>
         <button id="viewResults">View Results</button>
         <pre id="results"></pre>
+        <p id="resultMessage" style="color: red"></p>
       </section>
 
       <footer>
-        <a href="/">Back to Home</a>
+        <a href="/logout">Logout</a> | <a href="/">Back to Home</a>
       </footer>
     </div>
-
-    <script>
-      document
-        .getElementById("registerForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const voter_id = document.getElementById("voter_id").value;
-          const response = await fetch("/register-voter", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ voter_id }),
-          });
-          const result = await response.json();
-          alert(result.message || result.error);
-        });
-
-      document
-        .getElementById("voteForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const voter_id = document.getElementById("voter_id_vote").value;
-          const candidate = document.getElementById("candidate").value;
-          const response = await fetch("/cast-vote", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ voter_id, candidate }),
-          });
-          const result = await response.json();
-          alert(result.message || result.error);
-        });
-
-      document
-        .getElementById("viewResults")
-        .addEventListener("click", async () => {
-          const response = await fetch("/results");
-          const results = await response.json();
-          document.getElementById("results").textContent = JSON.stringify(
-            results,
-            null,
-            2
-          );
-        });
-    </script>
   </body>
 </html>

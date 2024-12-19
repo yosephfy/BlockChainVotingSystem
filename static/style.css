@@ -136,7 +136,106 @@ footer {
   font-family: monospace;
 }
 
-/* Admin Section Specific */
+/* Login and Registration Pages Specific */
+.voter-login,
+.voter-registration {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.voter-login h2,
+.voter-registration h2 {
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.voter-login form input,
+.voter-registration form input {
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.voter-login form button,
+.voter-registration form button {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.voter-login form button:hover,
+.voter-registration form button:hover {
+  background-color: #0056b3;
+}
+
+.voter-login p,
+.voter-registration p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.voter-login p a,
+.voter-registration p a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.voter-login p a:hover,
+.voter-registration p a:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+/* Admin Login Section */
+.admin-login {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.admin-login h2 {
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.admin-login form input {
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.admin-login form button {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #ffc107;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.admin-login form button:hover {
+  background-color: #e0a800;
+}
+
+/* Admin Dashboard Section */
 .admin-actions {
   margin-bottom: 20px;
   padding: 15px;
@@ -148,20 +247,32 @@ footer {
 .admin-actions h2 {
   color: #333;
   font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.admin-actions div {
+  margin: 15px 0;
+}
+
+.admin-actions div h3 {
+  font-size: 1.2rem;
+  color: #007bff;
+  margin-bottom: 5px;
 }
 
 .admin-actions button {
-  margin: 10px 0;
+  margin: 5px;
   padding: 10px;
-  background-color: #ffc107;
+  background-color: #28a745;
   color: white;
   border: none;
   border-radius: 5px;
+  font-size: 1rem;
   cursor: pointer;
 }
 
 .admin-actions button:hover {
-  background-color: #e0a800;
+  background-color: #218838;
 }
 
 .admin-actions pre {
@@ -174,111 +285,11 @@ footer {
   font-family: monospace;
 }
 
-/* About Page Specific */
-.about-overview,
-.about-benefits,
-.about-how-it-works,
-.about-technical {
-  margin-bottom: 20px;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
-.about-overview h2,
-.about-benefits h2,
-.about-how-it-works h2,
-.about-technical h2 {
-  color: #333;
-  font-size: 1.5rem;
-}
-
-.about-benefits ul {
-  list-style-type: disc;
-  margin-left: 20px;
-}
-
-.about-benefits li {
-  margin: 10px 0;
-}
-
-/* Help/FAQ Page Specific */
-.help-issues,
-.help-faq {
-  margin-bottom: 20px;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
-.help-issues h2,
-.help-faq h2 {
-  color: #333;
-  font-size: 1.5rem;
-}
-
-.help-issues ul,
-.help-faq ul {
-  list-style-type: disc;
-  margin-left: 20px;
-}
-
-.help-issues li,
-.help-faq li {
-  margin: 10px 0;
-}
-
-.help-issues li strong,
-.help-faq li strong {
-  color: #007bff;
-}
-
-/* Contact Page Specific */
-.contact-form,
-.contact-info {
-  margin-bottom: 20px;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
-.contact-form h2,
-.contact-info h2 {
-  color: #333;
-  font-size: 1.5rem;
-}
-
-.contact-form form input,
-.contact-form form textarea,
-.contact-form form button {
-  display: block;
-  width: 100%;
-  margin: 10px 0;
-  padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.contact-form form button {
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  border: none;
-}
-
-.contact-form form button:hover {
-  background-color: #0056b3;
-}
-
-.contact-info p {
+/* Status Messages */
+#electionStatus,
+#resetStatus,
+#auditResult {
   font-size: 1rem;
   color: #444;
-}
-
-.contact-info p strong {
-  color: #007bff;
+  margin-top: 10px;
 }
