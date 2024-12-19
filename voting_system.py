@@ -84,7 +84,7 @@ class VotingSystem:
         return get_election_status()
 
     def start_election(self):
-        if self.get_election_status() == "not_started":
+        if self.get_election_status() != "ongoing":
             update_election_status("ongoing")
             return True
         return False

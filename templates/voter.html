@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <title>Voter Dashboard</title>
     <link rel="stylesheet" href="/static/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script src="/static/voter.js" defer></script>
   </head>
   <body>
@@ -32,7 +34,8 @@
       <section class="view-results">
         <h2>View Results</h2>
         <button id="viewResults">View Results</button>
-        <pre id="results"></pre>
+        <div id="results"></div>
+        <canvas id="resultsChart" width="400" height="400"></canvas>
         <p id="resultMessage" style="color: red"></p>
       </section>
 

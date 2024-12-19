@@ -5,7 +5,7 @@ from cryptography.fernet import Fernet
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, redirect, render_template, request, jsonify, session, url_for, send_from_directory
 from voting_system import VotingSystem
-from database import Block, Voter, db, register_voter, authenticate_voter, fetch_all_voters, fetch_all_blocks, remove_all_voters
+from database import Block, Voter, db, get_election_status, register_voter, authenticate_voter, fetch_all_voters, fetch_all_blocks, remove_all_voters
 
 import json
 
@@ -183,6 +183,7 @@ def view_registered_voters():
 def view_statistics():
     if "admin" in session:
         blocks = fetch_all_blocks()
+        election_stat = get_election_status()
         results = {}
         for block in blocks:
             try:
@@ -192,7 +193,7 @@ def view_statistics():
             except json.JSONDecodeError as e:
                 return jsonify({"error": f"Invalid JSON format in block data: {str(e)}"}), 500
         total_votes = sum(results.values())
-        return jsonify({"results": results, "total_votes": total_votes}), 200
+        return jsonify({"results": results, "total_votes": total_votes, "election_status": election_stat}), 200
     return jsonify({"error": "Unauthorized"}), 403
 
 # Reset Election Results
@@ -242,7 +243,7 @@ def start_election():
     if "admin" in session:
         if voting_system.start_election():
             return jsonify({"message": "Election started successfully"}), 200
-        return jsonify({"error": "Election already ongoing or ended"}), 400
+        return jsonify({"error": "Election already ongoing"}), 400
     return jsonify({"error": "Unauthorized"}), 403
 
 
