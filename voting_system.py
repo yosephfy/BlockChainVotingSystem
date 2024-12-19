@@ -1,7 +1,7 @@
 import hashlib
 
 import cryptography
-from database import register_voter, authenticate_voter, mark_voter_as_voted, add_block_to_db, fetch_all_blocks
+from database import register_voter, authenticate_voter, mark_voter_as_voted, add_block_to_db, fetch_all_blocks, get_election_status, update_election_status
 from cryptography.fernet import Fernet
 import time
 import json
@@ -68,7 +68,6 @@ class VotingSystem:
         self.encryption_key = self.load_or_generate_key()
         self.cipher = Fernet(self.encryption_key)
         self.blockchain = Blockchain()
-        self.election_status = "not_started"  # "not_started", "ongoing", "ended"
 
     def load_or_generate_key(self):
         key_file = "fernet_key.key"
@@ -81,28 +80,31 @@ class VotingSystem:
                 f.write(key)
             return key
 
+    def get_election_status(self):
+        return get_election_status()
+
     def start_election(self):
-        if self.election_status == "not_started":
-            self.election_status = "ongoing"
+        if self.get_election_status() == "not_started":
+            update_election_status("ongoing")
             return True
         return False
 
     def end_election(self):
-        if self.election_status == "ongoing":
-            self.election_status = "ended"
+        if self.get_election_status() == "ongoing":
+            update_election_status("ended")
             return True
         return False
 
     def reset_election(self):
         self.blockchain = Blockchain()
-        self.election_status = "not_started"
+        update_election_status("not_started")
         return True
 
     def can_vote(self):
-        return self.election_status == "ongoing"
+        return self.get_election_status() == "ongoing"
 
     def can_view_results(self):
-        return self.election_status == "ended"
+        return self.get_election_status() == "ended"
 
     def register_voter(self, voter_id, password):
         return register_voter(voter_id, password)
@@ -128,7 +130,11 @@ class VotingSystem:
                 candidate = self.cipher.decrypt(data["vote"].encode()).decode()
                 results[candidate] = results.get(candidate, 0) + 1
             except (json.JSONDecodeError, cryptography.fernet.InvalidToken):
-                continue  # Skip invalid data
+                # Log and skip invalid votes
+                continue
+        # Remove "Invalid Encrypted Data" from results if present
+        if "Invalid Encrypted Data" in results:
+            del results["Invalid Encrypted Data"]
         return results
 
     def decrypt_vote(self, encrypted_vote):

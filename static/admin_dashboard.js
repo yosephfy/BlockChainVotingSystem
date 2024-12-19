@@ -85,13 +85,25 @@ document
     }
   });
 
-// Reset Results
-document.getElementById("resetResults").addEventListener("click", async () => {
-  const response = await fetch("/admin/reset-results");
-  const result = await response.json();
-  document.getElementById("resetStatus").textContent =
-    result.message || result.error;
-});
+// Reset Vote Count
+document
+  .getElementById("resetVoteCount")
+  .addEventListener("click", async () => {
+    const response = await fetch("/admin/reset-results");
+    const result = await response.json();
+    document.getElementById("resetVoteStatus").textContent =
+      result.message || result.error;
+  });
+
+// Remove All Voters
+document
+  .getElementById("removeAllVoters")
+  .addEventListener("click", async () => {
+    const response = await fetch("/admin/remove-voters", { method: "DELETE" });
+    const result = await response.json();
+    document.getElementById("removeVotersStatus").textContent =
+      result.message || result.error;
+  });
 
 // Audit Blockchain
 document
@@ -102,3 +114,30 @@ document
     document.getElementById("auditResult").textContent =
       result.message || result.error;
   });
+
+// Generate Random Votes
+document
+  .getElementById("generateVotesForm")
+  .addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const numVotes = document.getElementById("numVotes").value;
+
+    const response = await fetch("/admin/generate-random-votes", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ numVotes }),
+    });
+
+    const result = await response.json();
+    document.getElementById("generateVotesStatus").textContent =
+      result.message || result.error;
+  });
+
+async function fetchElectionStatus() {
+  const response = await fetch("/admin/statistics");
+  const data = await response.json();
+  document.getElementById("electionStatus").textContent =
+    data.election_status || "Unknown";
+}
+
+fetchElectionStatus();

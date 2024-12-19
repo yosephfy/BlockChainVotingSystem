@@ -18,7 +18,20 @@
       <!-- Admin Actions -->
       <section class="admin-actions">
         <h2>Admin Actions</h2>
-
+        <div>
+          <h3>Generate Random Votes</h3>
+          <form id="generateVotesForm">
+            <input
+              type="number"
+              id="numVotes"
+              placeholder="Enter number of random votes"
+              required
+              min="1"
+            />
+            <button type="submit">Generate Votes</button>
+          </form>
+          <p id="generateVotesStatus"></p>
+        </div>
         <!-- Manage Election -->
         <div>
           <h3>Manage Election</h3>
@@ -43,11 +56,18 @@
           <canvas id="resultsChart" width="400" height="400"></canvas>
         </div>
 
-        <!-- Reset Results -->
+        <!-- Reset Vote Count -->
         <div>
           <h3>Reset Election Results</h3>
-          <button id="resetResults">Reset Results</button>
-          <p id="resetStatus"></p>
+          <button id="resetVoteCount">Reset Vote Count</button>
+          <p id="resetVoteStatus"></p>
+        </div>
+
+        <!-- Remove All Voters -->
+        <div>
+          <h3>Remove All Voters</h3>
+          <button id="removeAllVoters">Remove All Voters</button>
+          <p id="removeVotersStatus"></p>
         </div>
 
         <!-- Audit Blockchain -->

@@ -1,9 +1,11 @@
 # app.py
+from random import choice
+import time
 from cryptography.fernet import Fernet
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, redirect, render_template, request, jsonify, session, url_for, send_from_directory
 from voting_system import VotingSystem
-from database import db, register_voter, authenticate_voter, fetch_all_voters, fetch_all_blocks
+from database import Block, Voter, db, register_voter, authenticate_voter, fetch_all_voters, fetch_all_blocks, remove_all_voters
 
 import json
 
@@ -25,9 +27,9 @@ voting_system = VotingSystem()
 @app.cli.command('init-db')
 def init_db():
     """Initialize the database."""
+    print("Initializing database...")
     db.create_all()
     print("Database initialized.")
-
 # Serve Static Files
 
 
@@ -184,7 +186,7 @@ def view_statistics():
         results = {}
         for block in blocks:
             try:
-                data = json.loads(block.data.replace("'", "\""))
+                data = json.loads(block.data.replace("'", '"'))
                 candidate = voting_system.decrypt_vote(data["vote"])
                 results[candidate] = results.get(candidate, 0) + 1
             except json.JSONDecodeError as e:
@@ -199,8 +201,26 @@ def view_statistics():
 @app.route("/admin/reset-results", methods=["GET"])
 def reset_results():
     if "admin" in session:
+        # Reset the blockchain in memory
         voting_system.reset_election()
+
+        # Reset the database: Clear blockchain data and reset voter statuses
+        db.session.query(Block).delete()  # Clear the Block table
+        for voter in Voter.query.all():  # Reset the voted status for all voters
+            voter.voted = False
+        db.session.commit()
+
         return jsonify({"message": "Election reset successfully"}), 200
+    return jsonify({"error": "Unauthorized"}), 403
+
+# Remove All Voters
+
+
+@app.route("/admin/remove-voters", methods=["DELETE"])
+def remove_all_voters_api():
+    if "admin" in session:
+        remove_all_voters()
+        return jsonify({"message": "All voters removed successfully"}), 200
     return jsonify({"error": "Unauthorized"}), 403
 
 # Audit Blockchain
@@ -233,6 +253,37 @@ def end_election():
             return jsonify({"message": "Election ended successfully"}), 200
         return jsonify({"error": "No election is currently ongoing"}), 400
     return jsonify({"error": "Unauthorized"}), 403
+
+
+@app.route("/admin/generate-random-votes", methods=["POST"])
+def generate_random_votes():
+    if "admin" not in session:
+        return jsonify({"error": "Unauthorized"}), 403
+
+    data = request.json
+    num_votes = data.get("numVotes")
+    if not num_votes or not str(num_votes).isdigit() or int(num_votes) <= 0:
+        return jsonify({"error": "Invalid number of votes"}), 400
+
+    candidates = ["Candidate A", "Candidate B", "Candidate C"]
+    for _ in range(int(num_votes)):
+        voter_id = f"debug_{int(time.time() * 1000)}"  # Unique voter ID
+        password = "debug_password"  # Default password for debugging
+
+        # Register the voter
+        if not register_voter(voter_id, password):
+            # Skip if voter ID already exists (though unlikely with unique IDs)
+            continue
+
+        # Assign a random vote
+        candidate = choice(candidates)
+        encrypted_vote = voting_system.cipher.encrypt(
+            candidate.encode()).decode()
+        voting_system.blockchain.add_block(
+            {"voter_id": voter_id, "vote": encrypted_vote}
+        )
+
+    return jsonify({"message": f"{num_votes} random votes generated and voters registered successfully"}), 200
 
 
 if __name__ == "__main__":

@@ -24,7 +24,32 @@ class Block(db.Model):
     hash = db.Column(db.String(64), nullable=False)
     nonce = db.Column(db.Integer, nullable=False)
 
+
+class ElectionStatus(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    # "not_started", "ongoing", "ended"
+    status = db.Column(db.String(20), nullable=False)
+
+
 # Database Utility Functions
+def get_election_status():
+    status_record = ElectionStatus.query.first()
+    if not status_record:
+        # Initialize with default status
+        status_record = ElectionStatus(status="not_started")
+        db.session.add(status_record)
+        db.session.commit()
+    return status_record.status
+
+
+def update_election_status(new_status):
+    status_record = ElectionStatus.query.first()
+    if status_record:
+        status_record.status = new_status
+    else:
+        status_record = ElectionStatus(status=new_status)
+        db.session.add(status_record)
+    db.session.commit()
 
 
 def register_voter(voter_id, password):
@@ -70,3 +95,15 @@ def fetch_all_voters():
 
 def fetch_all_blocks():
     return Block.query.all()
+
+
+def reset_votes():
+    for voter in Voter.query.all():
+        voter.voted = False
+    db.session.query(Block).delete()
+    db.session.commit()
+
+
+def remove_all_voters():
+    db.session.query(Voter).delete()
+    db.session.commit()
