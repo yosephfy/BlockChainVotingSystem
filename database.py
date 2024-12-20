@@ -24,18 +24,24 @@ class Block(db.Model):
     hash = db.Column(db.String(64), nullable=False)
     nonce = db.Column(db.Integer, nullable=False)
 
+# Election Status Model
+
 
 class ElectionStatus(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # "not_started", "ongoing", "ended"
     status = db.Column(db.String(20), nullable=False)
 
-
 # Database Utility Functions
+
+
 def get_election_status():
+    """
+    Retrieves the current election status from the database.
+    Initializes with 'not_started' if no record exists.
+    """
     status_record = ElectionStatus.query.first()
     if not status_record:
-        # Initialize with default status
         status_record = ElectionStatus(status="not_started")
         db.session.add(status_record)
         db.session.commit()
@@ -43,16 +49,24 @@ def get_election_status():
 
 
 def update_election_status(new_status):
+    """
+    Updates the election status in the database.
+    Creates a new status record if none exists.
+    """
     status_record = ElectionStatus.query.first()
-    if status_record:
-        status_record.status = new_status
-    else:
+    if not status_record:
         status_record = ElectionStatus(status=new_status)
         db.session.add(status_record)
+    else:
+        status_record.status = new_status
     db.session.commit()
 
 
 def register_voter(voter_id, password):
+    """
+    Registers a new voter with a hashed password.
+    Returns False if the voter ID is not unique.
+    """
     if Voter.query.filter_by(voter_id=voter_id).first():
         return False
     hashed_password = generate_password_hash(password)
@@ -63,13 +77,18 @@ def register_voter(voter_id, password):
 
 
 def authenticate_voter(voter_id, password):
+    """
+    Authenticates a voter by verifying the hashed password.
+    Returns True if authentication is successful, False otherwise.
+    """
     voter = Voter.query.filter_by(voter_id=voter_id).first()
-    if voter and check_password_hash(voter.password, password):
-        return True
-    return False
+    return voter and check_password_hash(voter.password, password)
 
 
 def mark_voter_as_voted(voter_id):
+    """
+    Marks a voter as having voted.
+    """
     voter = Voter.query.filter_by(voter_id=voter_id).first()
     if voter:
         voter.voted = True
@@ -77,6 +96,9 @@ def mark_voter_as_voted(voter_id):
 
 
 def add_block_to_db(index, timestamp, data, previous_hash, hash, nonce):
+    """
+    Adds a new block to the database.
+    """
     block = Block(
         index=index,
         timestamp=timestamp,
@@ -90,20 +112,44 @@ def add_block_to_db(index, timestamp, data, previous_hash, hash, nonce):
 
 
 def fetch_all_voters():
+    """
+    Fetches all voters from the database.
+    """
     return Voter.query.all()
 
 
 def fetch_all_blocks():
+    """
+    Fetches all blocks from the database.
+    """
     return Block.query.all()
 
 
 def reset_votes():
-    for voter in Voter.query.all():
+    """
+    Resets all voters' voted status and deletes all blocks from the database.
+    """
+    voters = Voter.query.all()
+    for voter in voters:
         voter.voted = False
     db.session.query(Block).delete()
     db.session.commit()
 
 
 def remove_all_voters():
+    """
+    Deletes all voters from the database.
+    """
     db.session.query(Voter).delete()
     db.session.commit()
+
+
+def get_voter_by_id(voter_id):
+    """
+    Retrieves a voter by their voter ID.
+    Returns a dictionary containing voter details or None if the voter doesn't exist.
+    """
+    voter = Voter.query.filter_by(voter_id=voter_id).first()
+    if voter:
+        return {"voter_id": voter.voter_id, "voted": voter.voted}
+    return None

@@ -1,129 +1,108 @@
+import {
+  updateElementText,
+  fetchAPI,
+  showAlert,
+  destroyChart,
+  initializePieChart,
+} from "./utils.js";
+
 let resultsChart = null;
 
 async function fetchDashboardData() {
   try {
-    const response = await fetch("/admin/statistics");
-    const data = await response.json();
+    // Fetch election statistics
+    const statsResponse = await fetchAPI("/admin/statistics");
+    if (statsResponse.error) throw new Error(statsResponse.error);
 
-    document.getElementById("electionStatus").textContent =
-      data.election_status || "Unknown";
+    const data = statsResponse.data || {};
+    const { election_status = "Unknown", total_votes = 0, results = {} } = data;
 
-    document.getElementById("totalVotes").textContent = data.total_votes;
+    updateElementText("electionStatus", election_status);
+    updateElementText("totalVotes", total_votes);
 
-    const candidates = Object.keys(data.results);
-    const votes = Object.values(data.results);
-    const totalVotes = data.total_votes;
+    const candidates = Object.keys(results);
+    const votes = Object.values(results);
 
-    // Calculate percentages and display them
     const candidatesWithPercentages = candidates.map((candidate, index) => {
-      const percentage = ((votes[index] / totalVotes) * 100).toFixed(2);
+      const percentage =
+        total_votes > 0 ? ((votes[index] / total_votes) * 100).toFixed(2) : 0;
       return `${candidate} (${percentage}%)`;
     });
 
-    // Update the DOM with candidate names and percentages
-    document.getElementById("candidatesList").textContent =
+    updateElementText(
+      "candidatesList",
       candidatesWithPercentages.length > 0
         ? candidatesWithPercentages.join(", ")
-        : "None";
+        : "None"
+    );
 
-    const voterResponse = await fetch("/admin/voters");
-    const voters = await voterResponse.json();
-    document.getElementById("registeredVoters").textContent = voters.length;
+    // Fetch registered voters count
+    const votersResponse = await fetchAPI("/admin/voters");
+    if (votersResponse.error) throw new Error(votersResponse.error);
 
-    if (resultsChart) {
-      resultsChart.destroy();
-    }
+    updateElementText("registeredVoters", votersResponse.length || 0);
 
+    // Update chart
     const ctx = document.getElementById("resultsChart").getContext("2d");
-    resultsChart = new Chart(ctx, {
-      type: "pie",
-      data: {
-        labels: candidates,
-        datasets: [
-          {
-            label: "Votes by Candidate",
-            data: Object.values(data.results),
-            backgroundColor: [
-              "#FF6384",
-              "#36A2EB",
-              "#FFCE56",
-              "#4BC0C0",
-              "#9966FF",
-              "#FF9F40",
-            ],
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: "top",
-          },
-        },
-      },
-    });
+    destroyChart(resultsChart);
+    resultsChart = initializePieChart(ctx, candidates, votes);
 
-    const auditResponse = await fetch("/admin/audit");
-    const auditResult = await auditResponse.json();
-    document.getElementById("auditResult").textContent =
-      auditResult.message || "Audit unavailable";
+    // Fetch blockchain audit result
+    const auditResponse = await fetchAPI("/admin/audit");
+    updateElementText(
+      "auditResult",
+      auditResponse.message || "Audit unavailable"
+    );
   } catch (error) {
     console.error("Error fetching dashboard data:", error);
   }
 }
 
 document.getElementById("startElection").addEventListener("click", async () => {
-  const response = await fetch("/admin/start-election");
-  const result = await response.json();
-  alert(result.message || result.error);
+  const response = await fetchAPI("/admin/start-election");
+  showAlert(response);
   fetchDashboardData();
 });
 
 document.getElementById("endElection").addEventListener("click", async () => {
-  const response = await fetch("/admin/end-election");
-  const result = await response.json();
-  alert(result.message || result.error);
+  const response = await fetchAPI("/admin/end-election");
+  showAlert(response);
   fetchDashboardData();
 });
 
-document.getElementById("refreshData").addEventListener("click", () => {
-  fetchDashboardData();
-});
+document
+  .getElementById("refreshData")
+  .addEventListener("click", fetchDashboardData);
 
 document
   .getElementById("generateVotesForm")
   .addEventListener("submit", async (e) => {
     e.preventDefault();
     const numVotes = document.getElementById("numVotes").value;
-    const response = await fetch("/admin/generate-random-votes", {
+    const response = await fetchAPI("/admin/generate-random-votes", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ numVotes }),
     });
-    const result = await response.json();
-    alert(result.message || result.error);
+    showAlert(response);
     fetchDashboardData();
   });
 
-fetchDashboardData();
-
-// Reset Vote Count
 document
   .getElementById("resetVoteCount")
   .addEventListener("click", async () => {
-    const response = await fetch("/admin/reset-results");
-    const result = await response.json();
-    document.getElementById("resetVoteStatus").textContent =
-      result.message || result.error;
+    const response = await fetchAPI("/admin/reset-results");
+    updateElementText("resetVoteStatus", response.message || response.error);
   });
 
-// Remove All Voters
 document
   .getElementById("removeAllVoters")
   .addEventListener("click", async () => {
-    const response = await fetch("/admin/remove-voters", { method: "DELETE" });
-    const result = await response.json();
-    document.getElementById("removeVotersStatus").textContent =
-      result.message || result.error || "";
+    const response = await fetchAPI("/admin/remove-voters", {
+      method: "DELETE",
+    });
+    updateElementText("removeVotersStatus", response.message || response.error);
   });
+
+// Initial data fetch
+fetchDashboardData();
